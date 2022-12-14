@@ -1,0 +1,88 @@
+create database Bank;
+
+use Bank;
+
+create table Kleent (
+	kod_kleent int primary key ,
+	fio varchar (30) ,
+	passport varchar (10) , 
+	telehpon varchar (11) ,
+	adres varchar (10) ,
+	dohod varchar (10));
+	
+create table Vid_kredita (
+	kod_kredita int primary key ,
+	nazvan_kridita varchar (15) ,
+	cel_kredita varchar (10) ,
+	procent_stavka varchar (10));
+
+create table Predostavlen_kredit (
+	n_pp int,
+	kleent int,
+	data_predostavlen date,
+	srok varchar (10),
+	data_vozvrata date,
+	summa varchar (10),
+	otmetca_o_vozvrate varchar (10),
+	foreign key(n_pp) references Vid_kredita(kod_kredita),
+	foreign key(kleent) references Kleent(kod_kleent));
+	
+	insert into Vid_kredita
+	values ('1' , 'luboy' , 'kvartira' , '9');
+	insert into Vid_kVid_kreditaredita
+	values ('2' , 'luboy' , 'telephon' , '6');
+	insert into Vid_kredita
+	values ('3' , 'luboy' , 'lechenie' , '7');
+	insert into Vid_kredita
+	values ('4' , 'luboy' , 'pereezd' , '7');
+	insert into Vid_kredita
+	values ('5' , 'luboy' , 'otdh' , '8');
+
+	insert into Predostavlen_kredit
+	values ('1','1','2019-10-23','12','2020-10-24' , '1000000', 'yes');
+	insert into Predostavlen_kredit
+	values ('2' , '2' , '2018-11-15' , '24' , '2020-11-20' , '500000', 'yes');
+	insert into Predostavlen_kredit
+	values ('3' , '3' , '2020-07-11' , '12' , '2021-10-20' , '570000', 'no');
+	insert into Predostavlen_kredit
+	values ('4' , '4' , '2015-04-15' , '12' , '2016-05-20' , '400000', 'yes');
+	insert into Predostavlen_kredit
+	values ('5' , '5' , '2021-11-07' , '12' , '2022-12-10' , '540000', 'no');
+	
+	insert into Kleent
+	values ('1' , 'Petrov Nikita Platonovich' , '1234454' , '89001112345' , 'Blagodat 1' , '561000' ) ;
+	insert into Kleent 
+	values ('2' , 'Nikuil Matviy Alekseevich' , '1236234' , '12343212341' , 'Marchel 2' , '121000') ;
+	insert into Kleent
+	values ('3' , 'Keler Bogdan Sergeevich' , '3456789' , '89114941652' , 'Kotoc 5' , '345000') ;
+	insert into Kleent
+	values ('4' , 'Ilin Timur Evgenevich' , '4567891' , '89025637238' , 'Base 8' , '78900') ;
+	insert into Kleent
+	values ('5' , 'Inof Yn Bodovich' , '8791234' , '89114851653' , 'Dalyapka 6' , '23000') ;
+	
+	select *
+	from Клиенты;
+	
+	2
+	select fio,summa,data_vozvrata,otmetca_o_vozvrate
+	from Kleent join Predostavlen_kredit 
+	on Kleent.kod_kleent = Predostavlen_kredit.kleent
+	where otmetca_o_vozvrate = 'yes'
+	order by fio desc;
+	4
+	select sum(summa) as 'Общяя сумма' from Predostavlen_kredit;
+	5
+	select fio,summa,cel_kredita
+	from Kleent join Vid_kredita join Predostavlen_kredit
+	on Kleent.kod_kleent = Predostavlen_kredit.kleent
+	and Kleent.kod_kleent = Vid_kredita.kod_kredita
+	where cel_kredita = 'telephon'
+	order by summa;
+	3
+	select fio,nazvan_kridita, summa
+	from Kleent join Vid_kredita join Predostavlen_kredit
+	on Kleent.kod_kleent = Predostavlen_kredit.kleent
+	and Kleent.kod_kleent = Vid_kredita.kod_kredita
+	where nazvan_kridita = 'luboy'
+	order by summa desc;
+	
